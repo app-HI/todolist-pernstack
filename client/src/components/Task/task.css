@@ -1,0 +1,46 @@
+.task-container {
+  padding: 1rem;
+  background-color: aqua;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-top-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: red;
+  width: 300px;
+}
+
+.date-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.date-container button {
+  position: absolute;
+  right: 0px;
+  bottom: -10px;
+}
+
+.task-bottom-container {
+  width: 100%;
+}
+
+.task-content-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: green;
+}
+
+.left-content {
+  display: flex;
+  width: 50%;
+  background-color: yellow;
+}
