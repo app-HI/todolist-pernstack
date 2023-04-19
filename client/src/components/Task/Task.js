@@ -124,7 +124,17 @@ function Task() {
 							type="text"
 							onChange={(e) => setInputUpdate(e.target.value)}
 						/>
-						<button type="submit">save</button>
+						<div style={{ display: "flex", width: "100%" }}>
+							<button style={{ width: "50%" }} type="submit">
+								save
+							</button>
+							<button
+								style={{ width: "50%" }}
+								onClick={() => setShowUpdateForm(false)}
+							>
+								cancel
+							</button>
+						</div>
 					</form>
 				)}
 
