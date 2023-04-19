@@ -1,0 +1,12 @@
+.app {
+	display: grid;
+	place-content: center;
+	background: linear-gradient(
+		27deg,
+		#f57071 0%,
+		#f57071 50%,
+		#585de6 50%,
+		#585de6 100%
+	);
+	min-height: 100vh;
+}

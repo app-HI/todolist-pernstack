@@ -10,13 +10,9 @@ function Task() {
 	const [showForm, setShowForm] = useState(false);
 	const [showUpdateForm, setShowUpdateForm] = useState(false);
 	const [updateId, setUpdateId] = useState(null);
-
-	//
 	const [checkboxUpdate, setCheckBoxUpdate] = useState(false);
 	const [inputUpdate, setInputUpdate] = useState("");
-	//
 	const url = "http://localhost:8000/";
-	//
 	//
 	const handleUpdate = (id) => {
 		setUpdateId(id);
@@ -88,7 +84,7 @@ function Task() {
 		<div className="task-container">
 			<div className="task-top-header">
 				<div className="date-container">
-					<h2>Thursday, 10th</h2>
+					<h2>{new Date().toLocaleDateString()}</h2>
 					<p>
 						<span>{task.length}</span> task
 					</p>

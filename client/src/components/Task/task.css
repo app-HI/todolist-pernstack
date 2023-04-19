@@ -1,19 +1,21 @@
 .task-container {
+	background-color: #ffffff;
 	padding: 1rem;
-	background-color: aqua;
 	width: 400px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	border-radius: 1rem;
 }
 
 .task-top-header {
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	background-color: red;
+	padding-bottom: 1rem;
 	width: 100%;
+	border-bottom: 1px solid #cccccc;
 }
 
 .date-container {
@@ -24,8 +26,18 @@
 
 .date-container button {
 	position: absolute;
-	right: 0px;
+	right: -10px;
 	bottom: -10px;
+	padding: 12px;
+	width: 40px;
+	height: 40px;
+	display: grid;
+	place-content: center;
+	border-radius: 50%;
+	border: none;
+	background-color: #f57071;
+	color: white;
+	font-size: 2rem;
 }
 
 .task-bottom-container {
@@ -40,6 +52,8 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	border-bottom: 1px solid #cccccc;
+	padding-bottom: 1rem;
 }
 
 .left-content {
@@ -72,8 +86,8 @@ form button:hover {
 	color: rgb(0, 0, 0);
 }
 .checked {
-	color: red;
+	color: rgb(255, 5, 84);
 }
 .unchecked {
-	color: darkseagreen;
+	color: rgb(0, 0, 0);
 }
