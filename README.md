@@ -2,4 +2,4 @@
 
 Front : React.js
 
-Backend : Node.js | MongoDB | Express.js
+Backend : Node.js | Postgres | Express.js
