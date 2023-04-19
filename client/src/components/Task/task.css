@@ -48,3 +48,9 @@
 	justify-content: center;
 	gap: 3rem;
 }
+.checked {
+	color: red;
+}
+.unchecked {
+	color: darkseagreen;
+}

@@ -4,14 +4,33 @@ import "./task.css";
 
 function Task() {
 	const [task, setTask] = useState(null);
-	const url = "http://localhost:8000";
+	const [checked, setChecked] = useState(false);
+	const [data, setData] = useState([]);
+	const [titleValue, setTitleValue] = useState("");
+	const [showForm, setShowForm] = useState(false);
+	const url = "http://localhost:8000/";
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		const itemsValue = {
+			title: titleValue,
+			completed: checked,
+		};
+		console.log(itemsValue);
+		await axios.post(url, itemsValue).then((res) => {
+			console.log(res);
+			console.log(res.data);
+			setData([...data, res.data]);
+			console.log(data);
+		});
+		setChecked(false);
+		setTitleValue("");
+	};
 	const handleDelete = async (id) => {
 		axios.delete("http://localhost:8000/" + id).then((res) => {
 			console.log(res);
 			console.log(res.data);
 
 			const posts = task.filter((item) => item.id !== id);
-			// this.setState({ posts });
 			console.log(posts);
 			setTask(posts);
 		});
@@ -23,7 +42,7 @@ function Task() {
 		axios.get(url).then((response) => {
 			setTask(response.data);
 		});
-	}, []);
+	}, [data]);
 
 	if (!task) return null;
 
@@ -31,22 +50,40 @@ function Task() {
 		<div className="task-container">
 			<div className="task-top-header">
 				<div className="date-container">
-					<h2>thursday, 10th</h2>
+					<h2>Thursday, 10th</h2>
 					<p>
-						<span>12</span> task
+						<span>{task.length}</span> task
 					</p>
-					<button>+</button>
+					<button onClick={() => setShowForm(!showForm)}>+</button>
 				</div>
 				<br />
 				<p>december</p>
 			</div>
 			<div className="task-bottom-container">
+				{showForm && (
+					<form onSubmit={handleSubmit}>
+						<input
+							checked={checked}
+							onChange={(e) => setChecked(e.currentTarget.checked)}
+							type="checkbox"
+						/>
+						<input
+							value={titleValue}
+							onChange={(e) => setTitleValue(e.target.value)}
+							type="text"
+						/>
+						<button>submit</button>
+					</form>
+				)}
+
 				{task.map((item, id) => {
 					return (
 						<div key={id} className="task-content-item">
 							<div className="left-content">
 								<input type="checkbox" defaultChecked={item.completed} />
-								<p>{item.title}</p>
+								<p className={item.completed ? "checked" : "unchecked"}>
+									{item.title}
+								</p>
 							</div>
 							<span>
 								{new Date(item.createdAt).toLocaleTimeString([], {
