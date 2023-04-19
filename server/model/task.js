@@ -2,7 +2,7 @@ const { Sequelize, DataTypes } = require("sequelize");
 require("dotenv").config();
 
 const sequelize = new Sequelize(
-	`postgres://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.URL}:${process.env.PORT}/${process.env.DBNAME}`
+	`postgres://${process.env.USERNAME1}:${process.env.PASSWORD}@${process.env.URL}:${process.env.PORT}/${process.env.DBNAME}`
 );
 
 const Task = sequelize.define("Task", {

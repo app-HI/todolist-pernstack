@@ -48,6 +48,29 @@
 	justify-content: center;
 	gap: 3rem;
 }
+form {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	align-items: flex-start;
+	justify-content: center;
+}
+form input:nth-child(2) {
+	width: 100%;
+}
+form button {
+	width: 100%;
+	background-color: rgb(166, 27, 194);
+	padding: 4px 8px;
+	color: white;
+	font-weight: 800;
+	transition: all 0.5s ease-in-out;
+}
+form button:hover {
+	background-color: rgb(20, 213, 33);
+	letter-spacing: 3px;
+	color: rgb(0, 0, 0);
+}
 .checked {
 	color: red;
 }
