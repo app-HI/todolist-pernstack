@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./task.css";
 
+import "./task.css";
 function Task() {
 	const [task, setTask] = useState([]);
 	const [checked, setChecked] = useState(false);
@@ -13,6 +13,18 @@ function Task() {
 	const [checkboxUpdate, setCheckBoxUpdate] = useState(false);
 	const [inputUpdate, setInputUpdate] = useState("");
 	const url = "http://localhost:8000/";
+	const grayStyle = {
+		color: "#A8A9CA",
+	};
+	//Display day and date
+	var options = {
+		weekday: "long",
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	};
+	var prnDt = new Date().toLocaleString("en-us", options);
+
 	//
 	const handleUpdate = (id) => {
 		setUpdateId(id);
@@ -84,25 +96,25 @@ function Task() {
 		<div className="task-container">
 			<div className="task-top-header">
 				<div className="date-container">
-					<h2>{new Date().toLocaleDateString()}</h2>
-					<p>
+					<h2>{prnDt}</h2>
+					<p style={grayStyle}>
 						<span>{task.length}</span> task
 					</p>
 					<button onClick={() => setShowForm(!showForm)}>+</button>
 				</div>
 				<br />
-				<p>december</p>
+				<p style={grayStyle}>December</p>
 			</div>
 			<div className="task-bottom-container">
 				{showForm && (
 					<form onSubmit={createTask}>
-						{/* <input
-							checked={checked}
-							onChange={(e) => setChecked(e.currentTarget.checked)}
-							type="checkbox"
-						/> */}
-
 						<input
+							style={{
+								width: "100%",
+								padding: ".5rem",
+								border: "none",
+								borderBottom: "2px solid #cccccc",
+							}}
 							value={titleValue}
 							onChange={(e) => setTitleValue(e.target.value)}
 							type="text"
@@ -138,9 +150,9 @@ function Task() {
 					</form>
 				)}
 
-				{task.map((item, id) => {
+				{task.map((item) => {
 					return (
-						<div key={id} className="task-content-item">
+						<div className="task-content-item">
 							<div className="left-content">
 								{/* <input type="checkbox" defaultChecked={item.completed} /> */}
 								<p className={item.completed ? "unchecked" : "checked"}>
@@ -153,10 +165,29 @@ function Task() {
 									minute: "2-digit",
 								})}
 							</span>
-							<div>
-								{/* <button onClick={() => handleUpdate(item.id)}>update</button> */}
-								<button onClick={() => handleUpdate(item.id)}>Edit</button>
-								<button onClick={() => handleDelete(item.id)}>delete</button>
+							<div style={{ display: "flex", gap: "1rem" }}>
+								<button
+									style={{ border: "none" }}
+									onClick={() => handleUpdate(item.id)}
+								>
+									<img
+										width={20}
+										height={20}
+										src="./assets/edit.svg"
+										alt="edit"
+									/>
+								</button>
+								<button
+									style={{ border: "none" }}
+									onClick={() => handleDelete(item.id)}
+								>
+									<img
+										width={20}
+										height={20}
+										src="./assets/delete.svg"
+										alt="delete"
+									/>
+								</button>
 							</div>
 						</div>
 					);
