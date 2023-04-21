@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import "./task.css";
+import CreateTask from "../CreateTask";
+import RemoveTask from "../RemoveTask";
 function Task() {
 	const [task, setTask] = useState([]);
 	const [checked, setChecked] = useState(false);
@@ -23,7 +25,11 @@ function Task() {
 		month: "long",
 		day: "numeric",
 	};
+	var options2 = {
+		month: "long",
+	};
 	var prnDt = new Date().toLocaleString("en-us", options);
+	var month = new Date().toLocaleString("en-us", options2);
 
 	//
 	const handleUpdate = (id) => {
@@ -52,40 +58,8 @@ function Task() {
 		setTask(result.data);
 	};
 	//
-
-	const createTask = async (e) => {
-		e.preventDefault();
-		const itemsValue = {
-			title: titleValue,
-			completed: checked,
-		};
-		console.log(itemsValue);
-		await axios.post(url, itemsValue).then((res) => {
-			console.log(res);
-			console.log(res.data);
-			setData([...data, res.data]);
-			console.log(data);
-		});
-		setShowForm(false);
-		setChecked(false);
-		setTitleValue("");
-	};
-	//
-	const handleDelete = async (id) => {
-		console.log(id);
-		axios.delete("http://localhost:8000/" + id).then((res) => {
-			console.log(res);
-			console.log(res.data);
-
-			const posts = task.filter((item) => item.id !== id);
-			console.log(posts);
-			setTask(posts);
-		});
-	};
-
 	useEffect(() => {
 		axios.get(url).then((response) => {
-			// console.log(response.data);
 			setTask(response.data);
 		});
 	}, [data]);
@@ -103,25 +77,21 @@ function Task() {
 					<button onClick={() => setShowForm(!showForm)}>+</button>
 				</div>
 				<br />
-				<p style={grayStyle}>December</p>
+				<p style={grayStyle}>{month}</p>
 			</div>
 			<div className="task-bottom-container">
 				{showForm && (
-					<form onSubmit={createTask}>
-						<input
-							style={{
-								width: "100%",
-								padding: ".5rem",
-								border: "none",
-								borderBottom: "2px solid #cccccc",
-							}}
-							value={titleValue}
-							onChange={(e) => setTitleValue(e.target.value)}
-							type="text"
-							placeholder="Type your TASK..."
-						/>
-						<button>submit</button>
-					</form>
+					<CreateTask
+						showForm={showForm}
+						setShowForm={setShowForm}
+						setTasks={setTask}
+						tasks={task}
+						titleValue={titleValue}
+						checked={checked}
+						setTitleValue={setTitleValue}
+						setChecked={setChecked}
+						url={url}
+					/>
 				)}
 				{showUpdateForm && (
 					<form onSubmit={handleupdateFinal}>
@@ -150,11 +120,10 @@ function Task() {
 					</form>
 				)}
 
-				{task.map((item) => {
+				{task.map((item, id) => {
 					return (
-						<div className="task-content-item">
+						<div key={id} className="task-content-item">
 							<div className="left-content">
-								{/* <input type="checkbox" defaultChecked={item.completed} /> */}
 								<p className={item.completed ? "unchecked" : "checked"}>
 									{item.title}
 								</p>
@@ -165,9 +134,9 @@ function Task() {
 									minute: "2-digit",
 								})}
 							</span>
-							<div style={{ display: "flex", gap: "1rem" }}>
+							<div style={{ display: "flex", gap: "2rem" }}>
 								<button
-									style={{ border: "none" }}
+									style={{ border: "none", width: "100%" }}
 									onClick={() => handleUpdate(item.id)}
 								>
 									<img
@@ -177,17 +146,8 @@ function Task() {
 										alt="edit"
 									/>
 								</button>
-								<button
-									style={{ border: "none" }}
-									onClick={() => handleDelete(item.id)}
-								>
-									<img
-										width={20}
-										height={20}
-										src="./assets/delete.svg"
-										alt="delete"
-									/>
-								</button>
+
+								<RemoveTask task={task} setTask={setTask} item={item} />
 							</div>
 						</div>
 					);
