@@ -15,11 +15,12 @@ const main = async () => {
 		console.error("Unable to connect to the database:", error);
 	}
 };
-
+app.use(cors());
 app.use(morgan("tiny"));
 app.use(bodyParser.json());
 // CRUD
 app.use("/", tasksRouter);
+
 //
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`);
