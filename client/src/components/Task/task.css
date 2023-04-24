@@ -113,6 +113,7 @@ form :last-child > button:first-child {
 }
 .unchecked {
 	color: rgb(0, 0, 0);
+	text-decoration: line-through;
 }
 @media screen and (max-width: 992px) {
 	.task-container {
