@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const { sequelize } = require("./model/task");
 const tasksRouter = require("./routes/tasks");
+const usersRouter = require("./routes/users");
 const app = express();
 const port = process.env.SERVERPORT || 8001;
 const main = async () => {
@@ -20,6 +21,7 @@ app.use(morgan("tiny"));
 app.use(bodyParser.json());
 // CRUD
 app.use("/", tasksRouter);
+app.use("/", usersRouter);
 
 //
 app.listen(port, () => {

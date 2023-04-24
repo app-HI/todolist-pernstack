@@ -21,5 +21,20 @@ const Task = sequelize.define("Task", {
 		type: DataTypes.BOOLEAN,
 	},
 });
+const User = sequelize.define("User", {
+	id: {
+		type: DataTypes.UUID,
+		defaultValue: DataTypes.UUIDV4,
+		primaryKey: true,
+	},
+	email: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+	password: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+});
 
-module.exports = { Task, sequelize };
+module.exports = { Task, sequelize, User };
