@@ -20,7 +20,7 @@ const setupRoutes = (app) => {
 	router.patch("/:id", updateTask);
 	router.delete("/:id", deleteTask);
 
-	app.use("/tasks", router);
+	app.use("/task", router);
 };
 
 module.exports = { setupRoutes };

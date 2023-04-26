@@ -30,7 +30,7 @@ const Register = async (req, res) => {
 		return res
 			.status(200)
 			.header("Authorization", `Bearer ${token}`)
-			.json({ email });
+			.json({ email, token: token });
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({ error: "Server Error" });
@@ -55,7 +55,7 @@ const Login = async (req, res) => {
 		return res
 			.status(200)
 			.header("Authorization", `Bearer ${token}`)
-			.json({ email, userId: user.id });
+			.json({ email, userId: user.id, token: token });
 	} catch (error) {
 		res.status(401).json({ error: "Invalid credentials" });
 	}

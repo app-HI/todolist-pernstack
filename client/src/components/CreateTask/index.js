@@ -9,7 +9,6 @@ const CreateTask = (props) => {
 		checked,
 		setTitleValue,
 		setChecked,
-		url,
 		tasks,
 		setTasks,
 		showForm,

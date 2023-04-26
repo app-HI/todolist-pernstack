@@ -63,8 +63,8 @@ function Task() {
 			}
 		);
 
-		const result = await axios.get(url);
-		setTask(result.data);
+		await fetchTodos();
+		// setTask(result.data);
 	};
 	//
 	const fetchTodos = useCallback(async () => {
@@ -112,7 +112,6 @@ function Task() {
 						checked={checked}
 						setTitleValue={setTitleValue}
 						setChecked={setChecked}
-						url={url}
 					/>
 				)}
 				{showUpdateForm && (
