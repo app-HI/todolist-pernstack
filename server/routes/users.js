@@ -1,16 +1,13 @@
 const expres = require("express");
-const router = expres.Router();
+const { Login, Register } = require("../controller/userController");
 
-const {
-	Login,
-	Register,
-	verifyToken,
-} = require("../controller/userController");
+const setupRoutes = (app) => {
+	const router = expres.Router();
 
-router.post("/login", Login);
-router.post("/register", Register);
-router.get("/protected", verifyToken, (req, res) => {
-	res.json({ message: "Protected route accessed!" });
-});
+	router.post("/login", Login);
+	router.post("/register", Register);
 
-module.exports = router;
+	app.use("/", router);
+};
+
+module.exports = { setupRoutes };

@@ -1,5 +1,4 @@
 const expres = require("express");
-const router = expres.Router();
 
 const {
 	createNewTask,
@@ -8,11 +7,20 @@ const {
 	updateTask,
 	deleteTask,
 } = require("../controller/taskController");
+const { requireAuth } = require("../middleware/requireAuth");
 
-router.post("/", createNewTask);
-router.get("/", getAllTodos);
-router.get("/:id", getOneTask);
-router.patch("/:id", updateTask);
-router.delete("/:id", deleteTask);
+const setupRoutes = (app) => {
+	const router = expres.Router();
 
-module.exports = router;
+	router.use(requireAuth);
+
+	router.get("/", getAllTodos);
+	router.post("/", createNewTask);
+	router.get("/:id", getOneTask);
+	router.patch("/:id", updateTask);
+	router.delete("/:id", deleteTask);
+
+	app.use("/tasks", router);
+};
+
+module.exports = { setupRoutes };

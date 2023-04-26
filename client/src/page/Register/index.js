@@ -1,52 +1,32 @@
-import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useSignup } from "../../hooks/useSignup";
 const Register = () => {
-	const navigate = useNavigate();
-	const url = "http://localhost:8000/register";
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+
+	const { signup, error, isLoading } = useSignup();
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const dataValues = {
-			email,
-			password,
-		};
-		try {
-			const response = await axios.post(url, dataValues).then((res) => {
-				console.log(res);
-				console.log(res.data);
-			});
-			console.log(response);
-			const token = response.headers.authorization;
-			console.log(token);
-			if (!token) {
-				throw new Error("Token not found");
-			}
-
-			localStorage.setItem("token", token);
-			//work with token in axios headers??!!
-			navigate("/");
-		} catch (error) {
-			console.log(error);
-		}
-		//send req to backend
-		setEmail("");
-		setPassword("");
+		await signup(email, password);
 	};
 	return (
-		<form onSubmit={handleSubmit}>
+		<form className="signup_container" onSubmit={handleSubmit}>
+			<h3>Register page</h3>
+			<label>Email</label>
 			<input
+				type="email"
 				value={email}
 				onChange={(e) => setEmail(e.target.value)}
-				type="email"
 			/>
+			<label>password</label>
 			<input
+				type="password"
 				value={password}
 				onChange={(e) => setPassword(e.target.value)}
-				type="password"
 			/>
-			<button>Register</button>
+			<button disabled={isLoading}>Register</button>
+			{error && <div className="error">{error}</div>}
 		</form>
 	);
 };

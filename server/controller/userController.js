@@ -1,77 +1,64 @@
 const Sequelize = require("sequelize");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const { User } = require("../model/task");
+require("dotenv").config();
+const createToken = (id) => {
+	return jwt.sign({ id }, process.env.SECRET_JWT, { expiresIn: "3d" });
+};
 
 const Register = async (req, res) => {
 	const { email, password } = req.body;
-	const matched_users = await User.findAll({
-		where: Sequelize.or({ email }),
-	});
-	if (matched_users.length === 0) {
-		const passwordHash = bcrypt.hashSync(password, 10);
-		const user = await User.create({
-			email,
-			password: passwordHash,
-		});
-		const token = jwt.sign(
-			{ user_id: user.id, email },
-			process.env.SECRET_JWT,
-			{
-				expiresIn: "2h",
-			}
-		);
+	console.log(req.body);
+	try {
+		// Check if user with given email already exists
+		const existingUser = await User.findOne({ where: { email } });
 
-		res.status(201).header("Authorization", `Bearer ${token}`).json({
-			userId: user.id,
-			email: user.email,
+		if (existingUser) {
+			return res.status(409).json({ error: "Email already in use" });
+		}
+
+		const salt = bcrypt.genSaltSync(10);
+		const hashedPassword = bcrypt.hashSync(password, salt);
+		const newUser = await User.create({
+			email: email,
+			password: hashedPassword,
 		});
-	} else {
-		res.status(400).json({ message: "exist" });
+
+		const token = createToken(newUser.id);
+
+		return res
+			.status(200)
+			.header("Authorization", `Bearer ${token}`)
+			.json({ email });
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ error: "Server Error" });
 	}
 };
 
 const Login = async (req, res) => {
 	const { email, password } = req.body;
-	const matched_users = await User.findAll({
-		where: Sequelize.and({ email }),
-	});
-	if (matched_users.length > 0) {
-		let user = matched_users[0];
-		let passwordHash = user.password;
-		if (bcrypt.compareSync(password, passwordHash)) {
-			const token = jwt.sign(
-				{ user_id: user.id, email },
-				process.env.SECRET_JWT,
-				{
-					expiresIn: "2h",
-				}
-			);
-			// Set token in response header
-			res.status(200).header("Authorization", `Bearer ${token}`).json({
-				userId: user.id,
-				emil: user.email,
-			});
-		} else {
-			res.redirect("/login");
+
+	try {
+		const user = await User.findOne({
+			where: { email: email },
+			// where: Sequelize.and({ email }),
+		});
+
+		if (!user || !bcrypt.compareSync(password, user.password)) {
+			throw new Error();
 		}
-	} else {
-		res.status(400).json({ message: "not exist!" });
+
+		const token = createToken(user.id);
+
+		return res
+			.status(200)
+			.header("Authorization", `Bearer ${token}`)
+			.json({ email, userId: user.id });
+	} catch (error) {
+		res.status(401).json({ error: "Invalid credentials" });
 	}
-};
-const verifyToken = (req, res, next) => {
-	const authHeader = req.headers.authorization;
-	if (!authHeader) {
-		return res.status(401).json({ message: "Unauthorized" });
-	}
-	const token = authHeader.split(" ")[1];
-	jwt.verify(token, process.env.SECRET_JWT, (err, user) => {
-		if (err) {
-			return res.status(403).json({ message: "Forbidden" });
-		}
-		req.user = user;
-		next();
-	});
 };
 
-module.exports = { Login, Register, verifyToken };
+module.exports = { Login, Register };
