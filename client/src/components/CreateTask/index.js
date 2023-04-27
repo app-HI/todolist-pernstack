@@ -28,7 +28,7 @@ const CreateTask = (props) => {
 		};
 		console.log(itemsValue);
 		await axios
-			.post("http://localhost:8000/task", itemsValue, {
+			.post(process.env.REACT_APP_ENDPOINT, itemsValue, {
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},

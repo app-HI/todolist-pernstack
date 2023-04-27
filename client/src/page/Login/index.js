@@ -8,16 +8,19 @@ const Login = () => {
 		e.preventDefault();
 		//send req to backend
 		await login(email, password);
-		// setEmail("");
-		// setPassword("");
+		setEmail("");
+		setPassword("");
 	};
 	return (
 		<form onSubmit={handleSubmit}>
+			<h3>Login page</h3>
+			<label>Email</label>
 			<input
 				value={email}
 				onChange={(e) => setEmail(e.target.value)}
 				type="email"
 			/>
+			<label>Password</label>
 			<input
 				value={password}
 				onChange={(e) => setPassword(e.target.value)}

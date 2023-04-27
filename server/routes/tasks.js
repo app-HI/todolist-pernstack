@@ -1,5 +1,4 @@
 const expres = require("express");
-
 const {
 	createNewTask,
 	getAllTodos,
@@ -8,12 +7,9 @@ const {
 	deleteTask,
 } = require("../controller/taskController");
 const { requireAuth } = require("../middleware/requireAuth");
-
 const setupRoutes = (app) => {
 	const router = expres.Router();
-
 	router.use(requireAuth);
-
 	router.get("/", getAllTodos);
 	router.post("/", createNewTask);
 	router.get("/:id", getOneTask);

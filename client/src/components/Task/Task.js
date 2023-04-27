@@ -15,7 +15,6 @@ function Task() {
 	const [updateId, setUpdateId] = useState(null);
 	const [checkboxUpdate, setCheckBoxUpdate] = useState(false);
 	const [inputUpdate, setInputUpdate] = useState("");
-	const url = "http://localhost:8000/task/";
 	const grayStyle = {
 		color: "#A8A9CA",
 	};
@@ -51,7 +50,7 @@ function Task() {
 
 	const updateFinal = async (x, y, id) => {
 		await axios.patch(
-			url + id,
+			`${process.env.REACT_APP_ENDPOINT}/${id}`,
 			{
 				title: y,
 				completed: x,
@@ -69,7 +68,7 @@ function Task() {
 	//
 	const fetchTodos = useCallback(async () => {
 		try {
-			const response = await axios.get("http://localhost:8000/task", {
+			const response = await axios.get(process.env.REACT_APP_ENDPOINT, {
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},

@@ -7,7 +7,7 @@ const RemoveTask = ({ task, setTask, item }) => {
 	const handleDelete = async (id) => {
 		console.log(id);
 		await axios
-			.delete("http://localhost:8000/task/" + id, {
+			.delete(`${process.env.REACT_APP_ENDPOINT}/${id}`, {
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},
