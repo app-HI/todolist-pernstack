@@ -6,31 +6,29 @@ const getAllTodos = async (req, res) => {
 			return;
 		}
 		const tasks = await Task.findAll();
-		res.json(tasks);
+		res.status(200).json(tasks);
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ message: "Internal server error" });
 	}
 };
-
+//
 const getOneTask = async (req, res) => {
 	try {
 		const taskId = req.params.id;
-		if (!isValidUUID(taskId)) {
-			res.status(400).json({ message: "Invalid task ID" });
-			return;
-		}
+
 		const task = await Task.findOne({ where: { id: taskId } });
 		if (!task) {
 			res.status(404).json({ message: "Task not found" });
 			return;
 		}
-		res.json(task);
+		res.status(200).json(task);
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ message: "Internal server error" });
 	}
 };
+//
 
 const createNewTask = async (req, res) => {
 	try {
@@ -47,10 +45,7 @@ const updateTask = async (req, res) => {
 	try {
 		const { completed, title } = req.body;
 		const taskId = req.params.id;
-		if (!isValidUUID(taskId)) {
-			res.status(400).json({ message: "Invalid task ID" });
-			return;
-		}
+
 		const task = await Task.findOne({ where: { id: taskId } });
 		if (!task) {
 			res.status(404).json({ message: "Task not found" });
@@ -67,10 +62,7 @@ const updateTask = async (req, res) => {
 const deleteTask = async (req, res) => {
 	try {
 		const taskId = req.params.id;
-		if (!isValidUUID(taskId)) {
-			res.status(400).json({ message: "Invalid task ID" });
-			return;
-		}
+
 		const task = await Task.findOne({ where: { id: taskId } });
 		if (!task) {
 			res.status(404).json({ message: "Task not found" });
@@ -82,12 +74,6 @@ const deleteTask = async (req, res) => {
 		console.error(error);
 		res.status(500).json({ message: "Internal server error" });
 	}
-};
-
-const isValidUUID = (uuid) => {
-	const uuidRegex =
-		/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-	return uuidRegex.test(uuid);
 };
 
 module.exports = {

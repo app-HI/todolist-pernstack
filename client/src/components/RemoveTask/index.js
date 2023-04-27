@@ -1,17 +1,25 @@
 import axios from "axios";
 import React from "react";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const RemoveTask = ({ task, setTask, item }) => {
+	const { user } = useAuthContext();
 	const handleDelete = async (id) => {
 		console.log(id);
-		axios.delete("http://localhost:8000/" + id).then((res) => {
-			console.log(res);
-			console.log(res.data);
+		await axios
+			.delete(`${process.env.REACT_APP_ENDPOINT}/${id}`, {
+				headers: {
+					Authorization: `Bearer ${user.token}`,
+				},
+			})
+			.then((res) => {
+				console.log(res);
+				console.log(res.data);
 
-			const posts = task.filter((item) => item.id !== id);
-			console.log(posts);
-			setTask(posts);
-		});
+				const posts = task.filter((item) => item.id !== id);
+				console.log(posts);
+				setTask(posts);
+			});
 	};
 	return (
 		<button

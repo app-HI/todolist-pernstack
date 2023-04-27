@@ -1,31 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const CreateTask = (props) => {
+	const { user } = useAuthContext();
 	const {
 		titleValue,
 		checked,
 		setTitleValue,
 		setChecked,
-		url,
 		tasks,
 		setTasks,
 		showForm,
 		setShowForm,
 	} = props;
-
+	useEffect(() => {
+		console.log("created");
+	}, [tasks]);
 	const createTask = async (e) => {
+		if (!user) {
+			return;
+		}
 		e.preventDefault();
 		const itemsValue = {
 			title: titleValue,
 			completed: checked,
 		};
 		console.log(itemsValue);
-		await axios.post(url, itemsValue).then((res) => {
-			console.log(res);
-			console.log(res.data);
-			setTasks([...tasks, res.data]);
-		});
+		await axios
+			.post(process.env.REACT_APP_ENDPOINT, itemsValue, {
+				headers: {
+					Authorization: `Bearer ${user.token}`,
+				},
+			})
+			.then((res) => {
+				console.log(res);
+				console.log(res.data);
+				setTasks([...tasks, res.data]);
+			});
 		setChecked(false);
 		setShowForm(!showForm);
 		setTitleValue("");

@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-
+import { useAuthContext } from "../../hooks/useAuthContext";
 import "./task.css";
 import CreateTask from "../CreateTask";
 import RemoveTask from "../RemoveTask";
 function Task() {
+	const { user } = useAuthContext();
 	const [task, setTask] = useState([]);
 	const [checked, setChecked] = useState(false);
-	const [data, setData] = useState([]);
+	// const [data, setData] = useState([]);
 	const [titleValue, setTitleValue] = useState("");
 	const [showForm, setShowForm] = useState(false);
 	const [showUpdateForm, setShowUpdateForm] = useState(false);
 	const [updateId, setUpdateId] = useState(null);
 	const [checkboxUpdate, setCheckBoxUpdate] = useState(false);
 	const [inputUpdate, setInputUpdate] = useState("");
-	const url = "http://localhost:8000/";
 	const grayStyle = {
 		color: "#A8A9CA",
 	};
@@ -49,20 +49,41 @@ function Task() {
 	};
 
 	const updateFinal = async (x, y, id) => {
-		await axios.patch(url + id, {
-			title: y,
-			completed: x,
-		});
+		await axios.patch(
+			`${process.env.REACT_APP_ENDPOINT}/${id}`,
+			{
+				title: y,
+				completed: x,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${user.token}`,
+				},
+			}
+		);
 
-		const result = await axios.get(url);
-		setTask(result.data);
+		await fetchTodos();
+		// setTask(result.data);
 	};
 	//
-	useEffect(() => {
-		axios.get(url).then((response) => {
+	const fetchTodos = useCallback(async () => {
+		try {
+			const response = await axios.get(process.env.REACT_APP_ENDPOINT, {
+				headers: {
+					Authorization: `Bearer ${user.token}`,
+				},
+			});
 			setTask(response.data);
-		});
-	}, [data]);
+		} catch (error) {
+			console.log(error);
+		}
+	}, [user]);
+
+	useEffect(() => {
+		if (user) {
+			fetchTodos();
+		}
+	}, [fetchTodos, user]);
 
 	if (!task) return null;
 
@@ -90,7 +111,6 @@ function Task() {
 						checked={checked}
 						setTitleValue={setTitleValue}
 						setChecked={setChecked}
-						url={url}
 					/>
 				)}
 				{showUpdateForm && (
