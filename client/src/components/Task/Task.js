@@ -15,6 +15,23 @@ function Task() {
 	const [updateId, setUpdateId] = useState(null);
 	const [checkboxUpdate, setCheckBoxUpdate] = useState(false);
 	const [inputUpdate, setInputUpdate] = useState("");
+
+	//
+	const [filteredList, setFilteredList] = useState(task);
+	const [searchQuery, setSearchQuery] = useState("");
+
+	//Search list of objects
+	const handleSearch = (event) => {
+		const query = event.target.value;
+		setSearchQuery(query);
+
+		const searchList = task.filter((item) => {
+			return item.title.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+		});
+
+		setFilteredList(searchList);
+	};
+	//
 	const grayStyle = {
 		color: "#A8A9CA",
 	};
@@ -116,7 +133,6 @@ function Task() {
 				{showUpdateForm && (
 					<form onSubmit={handleupdateFinal}>
 						<input
-							// checked={checkboxUpdate}
 							type="checkbox"
 							onChange={(e) => setCheckBoxUpdate(e.currentTarget.checked)}
 							defaultChecked={checkboxUpdate}
@@ -140,41 +156,61 @@ function Task() {
 					</form>
 				)}
 
-				{task.map((item, id) => {
-					return (
-						<div key={id} className="task-content-item">
-							<div className="left-content">
-								<p className={item.completed ? "unchecked" : "checked"}>
-									{item.title}
-								</p>
-							</div>
-							<span>
-								{new Date(item.createdAt).toLocaleTimeString([], {
-									hour: "2-digit",
-									minute: "2-digit",
-								})}
-							</span>
-							<div style={{ display: "flex", gap: "2rem" }}>
-								<button
-									style={{ border: "none", width: "100%" }}
-									onClick={() => handleUpdate(item.id)}
-								>
-									<img
-										width={20}
-										height={20}
-										src="./assets/edit.svg"
-										alt="edit"
-									/>
-								</button>
+				<div>
+					<input
+						type="text"
+						name="search"
+						placeholder="Search"
+						value={searchQuery}
+						onChange={handleSearch}
+					/>
+					{searchQuery.length > 0
+						? filteredList.map((item, index) => {
+								return (
+									<div className="card" key={index}>
+										<p className="num-text">{item.title}</p>
+										<div>
+											<p className="title">{item.completed}</p>
+											<p className="description"></p>
+										</div>
+									</div>
+								);
+						  })
+						: task.map((item, id) => {
+								return (
+									<div key={id} className="task-content-item">
+										<div className="left-content">
+											<p className={item.completed ? "unchecked" : "checked"}>
+												{item.title}
+											</p>
+										</div>
+										<span>
+											{new Date(item.createdAt).toLocaleTimeString([], {
+												hour: "2-digit",
+												minute: "2-digit",
+											})}
+										</span>
+										<div style={{ display: "flex", gap: "2rem" }}>
+											<button
+												style={{ border: "none", width: "100%" }}
+												onClick={() => handleUpdate(item.id)}
+											>
+												<img
+													width={20}
+													height={20}
+													src="./assets/edit.svg"
+													alt="edit"
+												/>
+											</button>
 
-								<RemoveTask task={task} setTask={setTask} item={item} />
-							</div>
-						</div>
-					);
-				})}
+											<RemoveTask task={task} setTask={setTask} item={item} />
+										</div>
+									</div>
+								);
+						  })}
+				</div>
 			</div>
 		</div>
 	);
 }
-
 export default Task;
