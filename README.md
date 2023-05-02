@@ -5,7 +5,7 @@ Backend : Node.js | Postgres | Express.js
 + 
 USER AUTHENTICATION AND AUTHORIZATION
 
-### [Website Demo](todolist-fullstack.netlify.app/)
+### [Website Demo](https://todolist-fullstack.netlify.app/)
 
 <img width="1512" alt="Screenshot 2023-05-02 at 17 55 45" src="https://user-images.githubusercontent.com/90243818/235720499-20af0a41-4625-4516-aaee-b6cfdbcb12c7.png">
 
