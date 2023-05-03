@@ -2,10 +2,8 @@ const { Task } = require("../model/task");
 
 const getAllTodos = async (req, res) => {
 	try {
-		if (req.url === "/favicon.ico") {
-			return;
-		}
-		const tasks = await Task.findAll();
+		const userId = req.user.id;
+		const tasks = await Task.findAll({ where: { UserId: userId } });
 		res.status(200).json(tasks);
 	} catch (error) {
 		console.error(error);
@@ -32,8 +30,13 @@ const getOneTask = async (req, res) => {
 
 const createNewTask = async (req, res) => {
 	try {
+		const UserId = req.user.id;
+		// console.log(userId);
 		const { title, completed } = req.body;
-		const task = await Task.create({ title, completed });
+		const task = await Task.create({ title, completed, UserId });
+		//
+		// let task = await req.user.createTask({ title, completed });
+
 		res.status(201).json(task);
 	} catch (error) {
 		console.error(error);
