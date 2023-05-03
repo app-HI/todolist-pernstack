@@ -1,8 +1,11 @@
 # todolist-mernstack
 
 Front : React.js 
-Backend : Node.js | Postgres | Express.js
+
+
+Backend : Node.js | Postgres | Sequelize | Express.js
 + 
+
 USER AUTHENTICATION AND AUTHORIZATION
 
 ### [Website Demo](https://todolist-fullstack.netlify.app/)
