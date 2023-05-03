@@ -43,7 +43,11 @@ const Task = sequelize.define("Task", {
 		type: DataTypes.BOOLEAN,
 	},
 });
-
+Task.associate = (models) => {
+	Task.belongsTo(models.User, { foreignKey: "userId" });
+};
+User.hasMany(Task);
+Task.hasOne(User);
 User.signup = async function (email, password) {
 	// Check if the email already exists
 	const existingUser = await User.findOne({ where: { email } });
