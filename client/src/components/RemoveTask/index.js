@@ -23,7 +23,7 @@ const RemoveTask = ({ task, setTask, item }) => {
 	};
 	return (
 		<button
-			style={{ border: "none", width: "100%" }}
+			style={{ border: "none", width: "100%",background:'none' }}
 			onClick={() => handleDelete(item.id)}
 		>
 			<img width={20} height={20} src="./assets/delete.svg" alt="delete" />

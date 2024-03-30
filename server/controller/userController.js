@@ -4,7 +4,8 @@ const bcrypt = require("bcrypt");
 const { User } = require("../model/task");
 require("dotenv").config();
 const createToken = (id) => {
-	return jwt.sign({ id }, process.env.SECRET_JWT, { expiresIn: "3d" });
+	// return jwt.sign({ id }, process.env.SECRET_JWT, { expiresIn: "3d" });
+	return jwt.sign({ id }, 'secret' ,{ expiresIn: "3d" });
 };
 
 const Register = async (req, res) => {

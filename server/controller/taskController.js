@@ -32,6 +32,7 @@ const createNewTask = async (req, res) => {
 	try {
 		const UserId = req.user.id;
 		// console.log(userId);
+		console.log('userId',req.user.id);
 		const { title, completed } = req.body;
 		const task = await Task.create({ title, completed, UserId });
 		//

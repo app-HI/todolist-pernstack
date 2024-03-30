@@ -192,7 +192,7 @@ function Task() {
 										</span>
 										<div style={{ display: "flex", gap: "2rem" }}>
 											<button
-												style={{ border: "none", width: "100%" }}
+												style={{ border: "none", width: "100%",background:'none' }}
 												onClick={() => handleUpdate(item.id)}
 											>
 												<img
